@@ -18,6 +18,9 @@ focuswindow(){
         i3fyra -z "${i3list[TWP]}"
       fi
     fi
+
+    ((__o[FORCE] == 1)) && [[ -n ${__o[command]} ]] \
+      && eval "${__o[command]}" > /dev/null 2>&1 &
   # else focus target window.
   else
     : "${hvar:=$(i3var get "hidden${i3list[TWC]}")}"
@@ -66,6 +69,9 @@ focuswindow(){
       fi
     fi
     i3-msg -q "[con_id=${i3list[TWC]}]" focus
+
+   ((__o[force] == 1)) && [[ -n ${__o[command]} ]] \
+     && eval "${__o[command]}" > /dev/null 2>&1 & 
   fi
 
   echo "${i3list[TWC]}"
