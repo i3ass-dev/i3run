@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3run - version: 0.043
+i3run - version: 0.044
 updated: 2020-01-26 by budRich
 EOB
 }
@@ -138,7 +138,10 @@ ERR(){ >&2 echo "[WARNING]" "$*"; }
 ERX(){ >&2 echo "[ERROR]" "$*" && exit 1 ; }
 
 focuswindow(){
-  
+  local forcing
+
+  forcing=$((__o[FORCE] == 1 ? 2 : __o[force] == 1 ? 1 : 0 ))
+
   # if target window is active (current), 
   # send it to the scratchpad
   if [[ ${i3list[AWC]} = "${i3list[TWC]}" ]]; then
@@ -154,10 +157,14 @@ focuswindow(){
         # hide the container
         i3fyra -z "${i3list[TWP]}"
       fi
+
+     ((forcing == 2)) && [[ -n ${__o[command]} ]] \
+       && eval "${__o[command]}" > /dev/null 2>&1 & 
+    else
+     ((forcing > 0)) && [[ -n ${__o[command]} ]] \
+       && eval "${__o[command]}" > /dev/null 2>&1 &  
     fi
 
-    ((__o[FORCE] == 1)) && [[ -n ${__o[command]} ]] \
-      && eval "${__o[command]}" > /dev/null 2>&1 &
   # else focus target window.
   else
     : "${hvar:=$(i3var get "hidden${i3list[TWC]}")}"
@@ -207,7 +214,7 @@ focuswindow(){
     fi
     i3-msg -q "[con_id=${i3list[TWC]}]" focus
 
-   ((__o[force] == 1)) && [[ -n ${__o[command]} ]] \
+   ((forcing > 0)) && [[ -n ${__o[command]} ]] \
      && eval "${__o[command]}" > /dev/null 2>&1 & 
   fi
 

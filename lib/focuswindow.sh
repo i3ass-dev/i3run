@@ -4,7 +4,7 @@ focuswindow(){
   local forcing
 
   forcing=$((__o[FORCE] == 1 ? 2 : __o[force] == 1 ? 1 : 0 ))
-  
+
   # if target window is active (current), 
   # send it to the scratchpad
   if [[ ${i3list[AWC]} = "${i3list[TWC]}" ]]; then
@@ -23,10 +23,11 @@ focuswindow(){
 
      ((forcing == 2)) && [[ -n ${__o[command]} ]] \
        && eval "${__o[command]}" > /dev/null 2>&1 & 
+    else
+     ((forcing > 0)) && [[ -n ${__o[command]} ]] \
+       && eval "${__o[command]}" > /dev/null 2>&1 &  
     fi
 
-    ((forcing > 0)) && [[ -n ${__o[command]} ]] \
-      && eval "${__o[command]}" > /dev/null 2>&1 & 
   # else focus target window.
   else
     : "${hvar:=$(i3var get "hidden${i3list[TWC]}")}"
