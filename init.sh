@@ -3,7 +3,7 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3run - version: 0.042
+i3run - version: 0.043
 updated: 2020-01-26 by budRich
 EOB
 }
@@ -18,10 +18,10 @@ i3run - Run, Raise or hide windows in i3wm
 
 SYNOPSIS
 --------
-i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
-i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
-i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
-i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--FORCE|-F] [--command|-e COMMAND]
+i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--FORCE|-F] [--command|-e COMMAND]
+i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--FORCE|-F] [--command|-e COMMAND]
+i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--FORCE|-F] [--command|-e COMMAND]
 i3run --help|-h
 i3run --version|-v
 
@@ -71,6 +71,11 @@ Execute COMMAND (--command), even if the window
 already exist. But not when hiding a window.
 
 
+--FORCE|-F  
+Execute COMMAND (--command), even if the window
+already exist.
+
+
 --command|-e COMMAND  
 Command to run if no window is found. Complex
 commands can be written inside quotes:  
@@ -108,8 +113,8 @@ done
 
 declare -A __o
 eval set -- "$(getopt --name "i3run" \
-  --options "i:sgmx:fe:c:t:n:hv" \
-  --longoptions "instance:,summon,nohide,mouse,rename:,force,command:,class:,title:,conid:,help,version," \
+  --options "i:sgmx:fFe:c:t:n:hv" \
+  --longoptions "instance:,summon,nohide,mouse,rename:,force,FORCE,command:,class:,title:,conid:,help,version," \
   -- "$@"
 )"
 
@@ -121,6 +126,7 @@ while true; do
     --mouse      | -m ) __o[mouse]=1 ;; 
     --rename     | -x ) __o[rename]="${2:-}" ; shift ;;
     --force      | -f ) __o[force]=1 ;; 
+    --FORCE      | -F ) __o[FORCE]=1 ;; 
     --command    | -e ) __o[command]="${2:-}" ; shift ;;
     --class      | -c ) __o[class]="${2:-}" ; shift ;;
     --title      | -t ) __o[title]="${2:-}" ; shift ;;
