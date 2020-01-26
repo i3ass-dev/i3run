@@ -17,6 +17,12 @@ Complex commands can be written inside quotes:
 i3run -i sublime_text -e 'subl && notify-send "sublime is started"'
 ```
 
+# options-force-description
+Execute COMMAND (`--command`), even if the window already exist. But not when hiding a window.
+
+# options-FORCE-description
+Execute COMMAND (`--command`), even if the window already exist. 
+
 # options-summon-description
 Instead of switching workspace,
 summon window to current workspace

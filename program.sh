@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3run - version: 0.041
-updated: 2019-02-19 by budRich
+i3run - version: 0.042
+updated: 2020-01-26 by budRich
 EOB
 }
 
@@ -44,10 +44,10 @@ i3run - Run, Raise or hide windows in i3wm
 
 SYNOPSIS
 --------
-i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
+i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
 i3run --help|-h
 i3run --version|-v
 
@@ -90,6 +90,11 @@ created (needs xdotool).
 
 
 
+
+
+--force|-f  
+Execute COMMAND (--command), even if the window
+already exist. But not when hiding a window.
 
 
 --command|-e COMMAND  
@@ -145,6 +150,9 @@ focuswindow(){
         i3fyra -z "${i3list[TWP]}"
       fi
     fi
+
+    ((__o[FORCE] == 1)) && [[ -n ${__o[command]} ]] \
+      && eval "${__o[command]}" > /dev/null 2>&1 &
   # else focus target window.
   else
     : "${hvar:=$(i3var get "hidden${i3list[TWC]}")}"
@@ -193,6 +201,9 @@ focuswindow(){
       fi
     fi
     i3-msg -q "[con_id=${i3list[TWC]}]" focus
+
+   ((__o[force] == 1)) && [[ -n ${__o[command]} ]] \
+     && eval "${__o[command]}" > /dev/null 2>&1 & 
   fi
 
   echo "${i3list[TWC]}"
@@ -260,8 +271,8 @@ sendtomouse(){
 }
 declare -A __o
 eval set -- "$(getopt --name "i3run" \
-  --options "i:sgmx:e:c:t:n:hv" \
-  --longoptions "instance:,summon,nohide,mouse,rename:,command:,class:,title:,conid:,help,version," \
+  --options "i:sgmx:fe:c:t:n:hv" \
+  --longoptions "instance:,summon,nohide,mouse,rename:,force,command:,class:,title:,conid:,help,version," \
   -- "$@"
 )"
 
@@ -272,6 +283,7 @@ while true; do
     --nohide     | -g ) __o[nohide]=1 ;; 
     --mouse      | -m ) __o[mouse]=1 ;; 
     --rename     | -x ) __o[rename]="${2:-}" ; shift ;;
+    --force      | -f ) __o[force]=1 ;; 
     --command    | -e ) __o[command]="${2:-}" ; shift ;;
     --class      | -c ) __o[class]="${2:-}" ; shift ;;
     --title      | -t ) __o[title]="${2:-}" ; shift ;;

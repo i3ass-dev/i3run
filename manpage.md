@@ -3,10 +3,10 @@
 SYNOPSIS
 --------
 ```text
-i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
+i3run --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+i3run --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
 i3run --help|-h
 i3run --version|-v
 ```
@@ -73,6 +73,10 @@ i3run --instance budswin --rename sublime_main -command subl
 ```
 
 
+
+`--force`|`-f`  
+Execute COMMAND (`--command`), even if the window
+already exist. But not when hiding a window.
 
 `--command`|`-e` COMMAND  
 Command to run if no window is found. Complex

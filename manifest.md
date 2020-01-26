@@ -1,8 +1,8 @@
 ---
 description: >
   Run, Raise or hide windows in i3wm
-updated:       2019-02-19
-version:       0.041
+updated:       2020-01-26
+version:       0.042
 author:        budRich
 repo:          https://github.com/budlabs/i3ass
 created:       2017-04-20
@@ -15,10 +15,10 @@ environment-variables:
     I3RUN_RIGHT_GAP: 10
     I3FYRA_WS: X
 synopsis: |
-    --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-    --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-    --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
-    --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--command|-e COMMAND]
+    --instance|-i INSTANCE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+    --class|-c CLASS [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+    --title|-t  TITLE [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
+    --conid|-n CON_ID [--summon|-s] [--nohide|-g] [--mouse|-m] [--rename|-x OLD_NAME] [--force|-f] [--command|-e COMMAND]
     --help|-h
     --version|-v
 ...
