@@ -3,8 +3,8 @@
 ___printversion(){
   
 cat << 'EOB' >&2
-i3run - version: 0.044
-updated: 2020-01-26 by budRich
+i3run - version: 0.085
+updated: 2020-08-06 by budRich
 EOB
 }
 
@@ -112,11 +112,15 @@ for ___f in "${___dir}/lib"/*; do
 done
 
 declare -A __o
-eval set -- "$(getopt --name "i3run" \
-  --options "i:sgmx:fFe:c:t:n:hv" \
-  --longoptions "instance:,summon,nohide,mouse,rename:,force,FORCE,command:,class:,title:,conid:,help,version," \
-  -- "$@"
+options="$(
+  getopt --name "[ERROR]:i3run" \
+    --options "i:sgmx:fFe:c:t:n:hv" \
+    --longoptions "instance:,summon,nohide,mouse,rename:,force,FORCE,command:,class:,title:,conid:,help,version," \
+    -- "$@" || exit 98
 )"
+
+eval set -- "$options"
+unset options
 
 while true; do
   case "$1" in
@@ -131,26 +135,16 @@ while true; do
     --class      | -c ) __o[class]="${2:-}" ; shift ;;
     --title      | -t ) __o[title]="${2:-}" ; shift ;;
     --conid      | -n ) __o[conid]="${2:-}" ; shift ;;
-    --help       | -h ) __o[help]=1 ;; 
-    --version    | -v ) __o[version]=1 ;; 
+    --help       | -h ) ___printhelp && exit ;;
+    --version    | -v ) ___printversion && exit ;;
     -- ) shift ; break ;;
     *  ) break ;;
   esac
   shift
 done
 
-if [[ ${__o[help]:-} = 1 ]]; then
-  ___printhelp
-  exit
-elif [[ ${__o[version]:-} = 1 ]]; then
-  ___printversion
-  exit
-fi
-
 [[ ${__lastarg:="${!#:-}"} =~ ^--$|${0}$ ]] \
-  && __lastarg="" \
-  || true
-
+  && __lastarg="" 
 
 
 

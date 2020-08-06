@@ -2,24 +2,22 @@
 
 main(){
 
-  if [[ -n ${__o[instance]:-} ]]; then
-    acri=("-i" "${__o[instance]}")
-  elif [[ -n ${__o[class]:-} ]]; then
-    acri=("-c" "${__o[class]}")
-  elif [[ -n ${__o[title]:-} ]]; then
-    acri=("-t" "${__o[title]}")
-  elif [[ -n ${__o[conid]:-} ]]; then
-    acri=("-n" "${__o[conid]}")
-  else
-    ___printhelp
-    ERX "please specify a criteria"
-  fi
-
+  declare -a acri   # options passed to i3list
   declare -A i3list # globals array
-  eval "$(i3list "${acri[@]}")"
+
+  for k in instance class title conid ; do
+    [[ -n ${__o[$k]} ]] \
+      && acri=("--$k" "${__o[$k]}") && break
+  done ; unset k
+
+  [[ -z ${acri[*]} ]] \
+    && ERH "please specify a criteria"
+
+  _array=$(i3list "${acri[@]}")
+  eval "$_array"
 
   # if window doesn't exist, launch the command.
-  if [[ -z ${i3list[TWC]:-} ]]; then
+  if [[ -z ${i3list[TWC]} ]]; then
     launchcommand
   else
     focuswindow

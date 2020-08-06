@@ -1,33 +1,38 @@
 #!/bin/env bash
 
 sendtomouse(){
-  local X Y newy newx tmpx tmpy
+  declare -i X Y newy newx tmpx tmpy breakx breaky
 
-  local breaky=$((i3list[WAH]-(I3RUN_BOTTOM_GAP+i3list[TWH])))
-  local breakx=$((i3list[WAW]-(I3RUN_RIGHT_GAP+i3list[TWW])))
+  eval "$(i3list "${acri[@]}")"
 
-  eval "$(xdotool getmouselocation --shell)"
+  i3-msg -q "[con_id=${i3list[TWC]}]" focus
 
-  local tmpy=$((Y-(i3list[TWH]/2)))
-  local tmpx=$((X-(i3list[TWW]/2)))
-  
+  ((i3list[TWF])) && {
+    breaky=$((i3list[WAH]-(I3RUN_BOTTOM_GAP+i3list[TWH])))
+    breakx=$((i3list[WAW]-(I3RUN_RIGHT_GAP+i3list[TWW])))
 
-  ((Y>(i3list[WAH]/2))) \
-    && newy=$((tmpy>breaky
-            ? breaky
-            : tmpy)) \
-    || newy=$((tmpy<I3RUN_TOP_GAP
-            ? I3RUN_TOP_GAP
-            : tmpy))
+    eval "$(xdotool getmouselocation --shell)"
 
-  ((X<(i3list[WAW]/2))) \
-    && newx=$((tmpx<I3RUN_LEFT_GAP 
-            ? I3RUN_LEFT_GAP 
-            : tmpx)) \
-    || newx=$((tmpx>breakx
-            ? breakx 
-            : tmpx))
+    tmpy=$((Y-(i3list[TWH]/2)))
+    tmpx=$((X-(i3list[TWW]/2))) 
 
-  ((i3list[TWF] == 1)) \
-    && i3-msg "[con_id=${i3list[TWC]}]" move absolute position $newx $newy
+    ((Y>(i3list[WAH]/2))) \
+      && newy=$((tmpy>breaky
+              ? breaky
+              : tmpy)) \
+      || newy=$((tmpy<I3RUN_TOP_GAP
+              ? I3RUN_TOP_GAP
+              : tmpy))
+
+    ((X<(i3list[WAW]/2))) \
+      && newx=$((tmpx<I3RUN_LEFT_GAP 
+              ? I3RUN_LEFT_GAP 
+              : tmpx)) \
+      || newx=$((tmpx>breakx
+              ? breakx 
+              : tmpx))
+
+    i3-msg -q "[con_id=${i3list[TWC]}]" \
+      move absolute position $newx $newy
+  }
 }

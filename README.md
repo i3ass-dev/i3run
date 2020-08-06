@@ -16,6 +16,7 @@ related to the same window identified by a given criteria.
 `i3run` will take different action depending on the state of
 the searched window:  
 
+
 | **target window state**          | **action**
 |:---------------------------------|:------------
 | Active and not handled by i3fyra | hide
@@ -24,7 +25,6 @@ the searched window:
 | Not handled by i3fyra and hidden | show window, activate
 | Not on current workspace         | goto workspace or show if `-s` is set
 | Not found                        | execute command (`-e`)
-
 
 
 Hidden in this context,  means that window is on the
