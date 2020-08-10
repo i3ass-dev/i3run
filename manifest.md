@@ -2,7 +2,7 @@
 description: >
   Run, Raise or hide windows in i3wm
 updated:       2020-08-10
-version:       0.088
+version:       0.089
 author:        budRich
 repo:          https://github.com/budlabs/i3ass
 created:       2017-04-20
@@ -50,4 +50,4 @@ nothing happens.
 It is important that `-e` *COMMAND* is **the last of the options**. 
 It is also important that *COMMAND* **will spawn a window matching the criteria**, 
 otherwise the script will get stuck in a loop waiting for the window to appear.
-(*it will stop waiting for the window to appear after 10 seconds*)
+(*it will stop waiting for the window to appear after 60 seconds*)

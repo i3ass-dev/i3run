@@ -32,7 +32,7 @@ scratchpad. Show in this context means,  move window to
 current workspace.  
 
 
-`-e` is optional, if no *COMMAND* is passed and no window is found,  nothing happens.  It is important that `-e` *COMMAND* is **the last of the options**.  It is also important that *COMMAND* **will spawn a window matching the criteria**,  otherwise the script will get stuck in a loop waiting for the window to appear. (*it will stop waiting for the window to appear after 10 seconds*)
+`-e` is optional, if no *COMMAND* is passed and no window is found,  nothing happens.  It is important that `-e` *COMMAND* is **the last of the options**.  It is also important that *COMMAND* **will spawn a window matching the criteria**,  otherwise the script will get stuck in a loop waiting for the window to appear. (*it will stop waiting for the window to appear after 60 seconds*)
 
 
 OPTIONS
