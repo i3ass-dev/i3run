@@ -99,6 +99,15 @@ Show help and exit.
 
 `--version`|`-v`  
 Show version and exit.
+## updates
+
+# 2020.08.10
+
+Only change since last version is to use `i3fyra --force`
+to override the new virtual positions which are not needed
+with i3run because it already figures out the correct
+container.
+
 
 
 
