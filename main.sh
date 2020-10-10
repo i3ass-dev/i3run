@@ -5,7 +5,7 @@ main(){
   declare -a acri   # options passed to i3list
   declare -A i3list # globals array
 
-  for k in instance class title conid ; do
+  for k in instance class title conid winid; do
     [[ -n ${__o[$k]} ]] \
       && acri=("--$k" "${__o[$k]}") && break
   done ; unset k
