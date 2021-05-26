@@ -4,7 +4,7 @@ focuswindow(){
 
   declare -i forcing hvar
 
-  forcing=$((__o[FORCE]?2:__o[force]?1:0))
+  forcing=$((__o[FORCE] ? 2 : __o[force] ? 1 : 0))
   
   # if target window is active (current), 
   if ((i3list[AWC] == i3list[TWC])); then
