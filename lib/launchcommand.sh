@@ -8,8 +8,6 @@ launchcommand(){
 
   declare -a xdtopt # options passed to xdotool
 
-  unset 'i3list[TWC]'
-
   [[ -n ${__o[rename]} ]] && {
 
     [[ ${acri[0]} = '--class'    ]] && xdtopt=("--class")
@@ -19,13 +17,13 @@ launchcommand(){
     xdtopt+=("${acri[1]}")
 
     xdotool set_window "${xdtopt[@]}" \
-      "${i3list[TWC]:=$(i3get "${acri[0]}" "${__o[rename]}" -r d -y)}"
+      "$(i3get "${acri[0]}" "${__o[rename]}" -r d -y)"
   }
   
-  : "${i3list[TWC]:=$(i3get -y "${acri[@]}")}"
+  i3list[TWC]=$(i3get -y "${acri[@]}")
   
   ((__o[mouse])) && sendtomouse
 
-  i3-msg -q "[con_id=${i3list[TWC]}]" focus
+  i3-msg -q "[id=${i3list[TWC]}]" focus
   echo "${i3list[TWC]}"
 }

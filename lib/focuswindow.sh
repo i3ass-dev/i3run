@@ -6,7 +6,7 @@ focuswindow(){
 
   forcing=$((__o[FORCE] ? 2 : __o[force] ? 1 : 0))
   
-  # if target window is active (current), 
+  # if target window is active, 
   if ((i3list[AWC] == i3list[TWC])); then
     
     # send it to the scratchpad
@@ -42,44 +42,39 @@ focuswindow(){
     else
       ((i3list[TWF] == 1)) && fs=enable || fs=disable
     fi
-    # target is not handled by i3fyra and not active
-    # TWP - target window parent container name
-    if [[ -z ${i3list[TWP]} ]]; then
-
+    
+    if [[ -z ${i3list[TWP]} && ${i3list[WSA]} != ${i3list[WST]} ]]; then
+      # target is not handled by i3fyra and not active
+      # TWP - target window parent container name
       # target is not on active workspace
-      if ((i3list[WSA] != i3list[WST])); then
+
+      # WST == -1 , target window is on scratchpad
+      if ((i3list[WST] == -1 || __o[summon])); then
+        i3-msg -q "[con_id=${i3list[TWC]}]"   \
+          move to workspace "${i3list[WAN]}", \
+          floating $fs
+          ((i3list[TWF] && __o[mouse])) && sendtomouse
+      else
+        i3-msg -q workspace "${i3list[WTN]}"
+      fi
+        
+    elif ((i3list[WSA] != i3list[WST])); then
+      # window is handled by i3fyra and not active
+      # current ws is i3fyra WS
+      if ((i3list[WSF] == i3list[WSA])); then
+        # target window is in a hidden (LHI) container
+        [[ ${i3list[TWP]} =~ [${i3list[LHI]}] ]] \
+          && i3fyra --force --show "${i3list[TWP]}" --array "$_array"
+
+      else # current ws is not i3fyra WS
         # WST == -1 , target window is on scratchpad
         if ((i3list[WST] == -1 || __o[summon])); then
-          i3-msg -q "[con_id=${i3list[TWC]}]"   \
-            move to workspace "${i3list[WAN]}", \
-            floating $fs
+          i3-msg -q "[con_id=${i3list[TWC]}]" \
+            move to workspace "${i3list[WAN]}", floating $fs
             ((i3list[TWF] && __o[mouse])) && sendtomouse
-        else
+        else # got to target windows workspace
+          # WTN == name (string) of workspace
           i3-msg -q workspace "${i3list[WTN]}"
-        fi
-        
-      fi
-    else # window is handled by i3fyra and not active
-
-      # window is not on current ws
-      if ((i3list[WSA] != i3list[WST])); then
-
-        # current ws is i3fyra WS
-        if ((i3list[WSF] == i3list[WSA])); then
-          # target window is in a hidden (LHI) container
-          [[ ${i3list[TWP]} =~ [${i3list[LHI]}] ]] \
-            && i3fyra --force --show "${i3list[TWP]}" --array "$_array"
-
-        else # current ws is not i3fyra WS
-          # WST == -1 , target window is on scratchpad
-          if ((i3list[WST] == -1 || __o[summon])); then
-            i3-msg -q "[con_id=${i3list[TWC]}]" \
-              move to workspace "${i3list[WAN]}", floating $fs
-              ((i3list[TWF] && __o[mouse])) && sendtomouse
-          else # got to target windows workspace
-            # WTN == name (string) of workspace
-            i3-msg -q workspace "${i3list[WTN]}"
-          fi
         fi
       fi
     fi
